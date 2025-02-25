@@ -11,12 +11,6 @@ A simplified application to manage customer details, payments, real-time notific
 - [Prerequisites](#prerequisites)
 - [Environment Variables](#environment-variables)
 - [Running with Docker](#running-with-docker)
-- [Local Development](#local-development)
-- [Useful Commands](#useful-commands)
-- [Swagger/OpenAPI Docs](#swaggeropenapi-docs)
-- [Technical Decisions](#technical-decisions)
-- [Future Improvements](#future-improvements)
-- [License](#license)
 
 ## Overview
 
