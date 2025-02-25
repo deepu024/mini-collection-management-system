@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import Link from "next/link";
 
 
 interface Customer {
@@ -76,21 +75,28 @@ export default function CustomersPage() {
             </tr>
           </thead>
           <tbody>
-        {customers.map((c) => (
-        <tr key={c.id}>
-            <td>{c.name}</td>
-            <td>{c.paymentStatus}</td>
-            {/* Link to edit page */}
-            <td>
-            <Link
-                href={`/customers/${c.id}/edit`}
-                className="text-blue-600 underline"
-            >
-                Edit
-            </Link>
-            </td>
-        </tr>
-        ))}
+          {customers.map((c) => (
+  <tr key={c.id}>
+    <td>{c.id}</td>
+    <td>{c.name}</td>
+    <td>{c.contactInfo}</td>
+    <td>{c.outstandingAmount}</td>
+    <td>
+      {c.paymentDueDate
+        ? new Date(c.paymentDueDate).toLocaleDateString()
+        : ""}
+    </td>
+    <td>{c.paymentStatus}</td>
+
+    {/* If you have an Edit link */}
+    <td>
+      <a href={`/customers/${c.id}/edit`} className="text-blue-600">
+        Edit
+      </a>
+    </td>
+  </tr>
+))}
+
             {customers.length === 0 && !loading && (
               <tr>
                 <td colSpan={6} className="text-center p-4 text-gray-400">

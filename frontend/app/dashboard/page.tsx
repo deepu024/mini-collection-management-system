@@ -9,7 +9,6 @@ export default function Dashboard() {
     // Connect to the socket server
     const socket = io(process.env.NEXT_PUBLIC_WS_URL || "http://localhost:4000");
 
-    // Listen for the "newCustomer" event
     socket.on("newCustomer", (data: any) => {
       setNotifications((prev) => [
         `New customer added: ${data.name}`,
