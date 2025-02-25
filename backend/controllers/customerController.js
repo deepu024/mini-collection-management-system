@@ -1,38 +1,32 @@
 const prisma = require('../config/prisma');
 const ExcelJS = require('exceljs');
 
-const createCustomer = async (req, res, next) => {
+async function createCustomer(req, res, next) {
   try {
-    const {
-      name,
-      contactInfo,
-      outstandingAmount,
-      paymentDueDate,
-      paymentStatus,
-    } = req.body;
+    const { name, contactInfo, outstandingAmount, paymentDueDate, paymentStatus } = req.body;
 
-    const customer = await prisma.customer.create({
+    const newCustomer = await prisma.customer.create({
       data: {
         name,
         contactInfo,
-        outstandingAmount: parseFloat(outstandingAmount) || 0,
-        paymentDueDate: paymentDueDate ? new Date(paymentDueDate) : null,
-        paymentStatus: paymentStatus || 'PENDING',
+        outstandingAmount,
+        paymentDueDate,
+        paymentStatus,
       },
     });
 
-    // Emit WebSocket event: "newCustomer"
     global.io.emit('newCustomer', {
-      id: customer.id,
-      name: customer.name,
-      paymentStatus: customer.paymentStatus,
+      id: newCustomer.id,
+      name: newCustomer.name,
+      message: `New customer added: ${newCustomer.name}`,
     });
 
-    return res.status(201).json(customer);
-  } catch (err) {
-    next(err);
+    return res.status(201).json(newCustomer);
+  } catch (error) {
+    next(error);
   }
-};
+}
+
 
 const getAllCustomers = async (req, res, next) => {
   try {
@@ -59,7 +53,7 @@ const getCustomer = async (req, res, next) => {
   }
 };
 
-const updateCustomer = async (req, res, next) => {
+async function updateCustomer(req, res, next) {
   try {
     const id = Number(req.params.id);
     const {
@@ -75,16 +69,17 @@ const updateCustomer = async (req, res, next) => {
       data: {
         name,
         contactInfo,
-        outstandingAmount: parseFloat(outstandingAmount) || undefined,
+        outstandingAmount: parseFloat(outstandingAmount),
         paymentDueDate: paymentDueDate ? new Date(paymentDueDate) : undefined,
         paymentStatus,
       },
     });
-    res.json(updated);
-  } catch (err) {
-    next(err);
+    return res.json(updated);
+  } catch (error) {
+    next(error);
   }
-};
+}
+
 
 const deleteCustomer = async (req, res, next) => {
   try {
