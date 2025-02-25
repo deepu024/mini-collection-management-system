@@ -1,0 +1,27 @@
+// backend/prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  createdAt DateTime @default(now())
+}
+
+model Customer {
+  id                Int      @id @default(autoincrement())
+  name              String
+  contactInfo       String?
+  outstandingAmount Float    @default(0.0)
+  paymentDueDate    DateTime?
+  paymentStatus     String   @default("PENDING")
+  createdAt         DateTime @default(now())
+}
