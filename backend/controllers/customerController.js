@@ -10,7 +10,7 @@ async function createCustomer(req, res, next) {
         name,
         contactInfo,
         outstandingAmount,
-        paymentDueDate,
+        paymentDueDate: paymentDueDate ? new Date(paymentDueDate) : undefined,
         paymentStatus,
       },
     });
