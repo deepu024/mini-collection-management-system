@@ -36,7 +36,13 @@ app.use(errorMiddleware);
 
 // WebSocket
 const httpServer = createServer(app);
-global.io = new Server(httpServer, { cors: { origin: '*' } });
+global.io = new Server(httpServer, {
+  cors: {
+    origin: ['http://localhost:3000'],
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+});
 global.io.on('connection', (socket) => {
   console.log('Socket connected:', socket.id);
   socket.on('disconnect', () => {

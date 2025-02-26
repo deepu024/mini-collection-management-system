@@ -1,5 +1,6 @@
 const prisma = require('../config/prisma');
 const ExcelJS = require('exceljs');
+const { log } = require('../utils/logger');
 
 async function createCustomer(req, res, next) {
   try {
@@ -14,6 +15,8 @@ async function createCustomer(req, res, next) {
         paymentStatus,
       },
     });
+    
+    log(`New customer added: ${newCustomer.name}`);
 
     global.io.emit('newCustomer', {
       id: newCustomer.id,
@@ -74,6 +77,8 @@ async function updateCustomer(req, res, next) {
         paymentStatus,
       },
     });
+
+    log(`Customer updated: ${updated.name}`);
     return res.json(updated);
   } catch (error) {
     next(error);
